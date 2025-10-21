@@ -28,6 +28,9 @@ jobs:
           DBMATE_MIGRATIONS_DIR: '$GITHUB_WORKSPACE/migrations'
         run: /usr/local/bin/dbmate new "${{ github.event.inputs.migration_description }}"
 
+      - name: Log new migration file name
+        run: echo `ls /usr/local/bin/migrations | head -n 1`
+
       - name: Create new branch
         run: |
           git switch -c `ls /usr/local/bin/migrations | head -n 1`
