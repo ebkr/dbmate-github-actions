@@ -6,6 +6,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      migration_description:
+        type: string
+        description: Purpose of the migration
+        required: true
 
 jobs:
   migrate:
@@ -18,9 +23,18 @@ jobs:
         run: |
           sudo curl -fsSL -o /usr/local/bin/dbmate https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
           sudo chmod +x /usr/local/bin/dbmate
+          mkdir /usr/local/bin/migrations
 
-      - name: Migrate up
+      - name: Create migration
         env:
           DATABASE_URL: ${{ secrets.DatabaseConnectionUrl }}
           DBMATE_MIGRATIONS_DIR: '$GITHUB_WORKSPACE/migrations'
-        run: /usr/local/bin/dbmate up
+        run: /usr/local/bin/dbmate new "${{ github.event.inputs.migration_description }}"
+
+      - name: Create new branch
+        run: |
+          git switch -c `ls /usr/local/bin/migrations | head -n 1`
+          mv "/usr/local/bin/migrations/*" "$GITHUB_WORKSPACE/migrations"
+          git add .
+          git commit -a "AUTO: Created migration"
+          git push
