@@ -1,4 +1,4 @@
-name: Migrate
+name: Create migration
 
 on:
   # Allows you to run this workflow manually from the Actions tab
