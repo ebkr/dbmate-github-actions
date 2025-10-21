@@ -24,18 +24,18 @@ jobs:
         run: |
           sudo curl -fsSL -o /usr/local/bin/dbmate https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
           sudo chmod +x /usr/local/bin/dbmate
-          mkdir /usr/local/bin/migrations
+          mkdir /usr/local/migrations
 
       - name: Create migration
         env:
           DATABASE_URL: ${{ secrets.DatabaseConnectionUrl }}
-          DBMATE_MIGRATIONS_DIR: '/usr/local/bin/migrations'
+          DBMATE_MIGRATIONS_DIR: '/usr/local/migrations'
         run: /usr/local/bin/dbmate new "${{ github.event.inputs.migration_description }}"
 
       - name: Create new branch
         run: |
           git switch -c ${{ github.event.inputs.destination_branch_name }}
-          mv "/usr/local/bin/migrations/*" "$GITHUB_WORKSPACE/migrations"
+          mv "/usr/local/migrations/*" "$GITHUB_WORKSPACE/migrations"
           git add .
           git commit -a "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
           git push
