@@ -8,6 +8,9 @@ on:
         type: string
         description: Purpose of the migration
         required: true
+      destination_branch_name:
+        type: string
+        description: Destination branch name
 
 jobs:
   create-migration:
@@ -28,13 +31,10 @@ jobs:
           DBMATE_MIGRATIONS_DIR: '/usr/local/bin/migrations'
         run: /usr/local/bin/dbmate new "${{ github.event.inputs.migration_description }}"
 
-      - name: Log new migration file name
-        run: echo `ls /usr/local/bin/migrations | head -n 1`
-
       - name: Create new branch
         run: |
-          git switch -c `ls /usr/local/bin/migrations | head -n 1`
+          git switch -c ${{ github.event.inputs.destination_branch_name }}
           mv "/usr/local/bin/migrations/*" "$GITHUB_WORKSPACE/migrations"
           git add .
-          git commit -a "AUTO: Created migration"
+          git commit -a "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
           git push
