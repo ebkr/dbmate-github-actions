@@ -32,6 +32,8 @@ jobs:
         run: /usr/local/bin/dbmate new "${{ github.event.inputs.migration_description }}"
 
       - name: Create new branch
+        with:
+          token: ${{ secrets.PAT }}
         run: |
           git switch -c ${{ github.event.inputs.destination_branch_name }}
           git add .
