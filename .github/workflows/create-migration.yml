@@ -35,6 +35,8 @@ jobs:
 
       - name: Create new branch
         run: |
+          git config --global user.name 'ebkr'
+          git config --global user.email 'ebkr@users.noreply.github.com'
           git switch -c ${{ github.event.inputs.destination_branch_name }}
           git add .
           git commit -m "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
