@@ -11,6 +11,7 @@ on:
       destination_branch_name:
         type: string
         description: Destination branch name
+        required: true
 
 jobs:
   create-migration:
