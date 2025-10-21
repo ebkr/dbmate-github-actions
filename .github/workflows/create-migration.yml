@@ -35,5 +35,5 @@ jobs:
         run: |
           git switch -c ${{ github.event.inputs.destination_branch_name }}
           git add .
-          git commit -a "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
+          git commit -m "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
           git push
