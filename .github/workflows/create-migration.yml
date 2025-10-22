@@ -17,25 +17,12 @@ jobs:
   create-migration:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
-      actions: write
-      checks: write
-      deployments: write
-      discussions: write
-      issues: write
-      pages: read
-      packages: write
-      pull-requests: write
-      repository-projects: write
-      security-events: write
-      statuses: write
     steps:
       # Checks-out the repository
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
-          repository: ebkr/dbmate-github-actions
 
       - name: Prepare DBMate
         run: |
@@ -45,14 +32,8 @@ jobs:
       - name: Create migration
         env:
           DATABASE_URL: ${{ secrets.DatabaseConnectionUrl }}
-          DBMATE_MIGRATIONS_DIR: '$GITHUB_WORKSPACE/migrations'
+          DBMATE_MIGRATIONS_DIR: './migrations'
         run: /usr/local/bin/dbmate new "${{ github.event.inputs.migration_description }}"
-
-#      - uses: stefanzweifel/git-auto-commit-action@v7
-#        with:
-#          commit_message: "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
-#          create_branch: 'true'
-#          branch: '${{ github.event.inputs.destination_branch_name }}'
 
       - name: Create new branch
         run: |
