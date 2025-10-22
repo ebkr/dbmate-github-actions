@@ -17,12 +17,25 @@ jobs:
   create-migration:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: write
+      actions: write
+      checks: write
+      deployments: write
+      discussions: write
+      issues: write
+      pages: read
+      packages: write
+      pull-requests: write
+      repository-projects: write
+      security-events: write
+      statuses: write
     steps:
       # Checks-out the repository
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
+          repository: ebkr/dbmate-github-actions
 
       - name: Prepare DBMate
         run: |
