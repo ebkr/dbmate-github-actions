@@ -1,4 +1,5 @@
 name: Create migration
+run-name: Create migration for ${{ github.event.inputs.destination_branch_name }}
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -15,7 +16,6 @@ on:
 
 jobs:
   create-migration:
-    name: Create migration for ${{ github.event.inputs.destination_branch_name }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
