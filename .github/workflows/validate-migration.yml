@@ -1,4 +1,4 @@
-run-name: Validate ${{ github.base_ref }} against ${{ github.sha }}
+name: Validate migration
 
 on:
   push:
@@ -22,6 +22,6 @@ jobs:
 
       - name: Migrate up
         env:
-          DATABASE_URL: "clickhouse://localhost:8123/default"
+          DATABASE_URL: "clickhouse://localhost:9000/default"
           DBMATE_MIGRATIONS_DIR: './migrations'
-        run: /usr/local/bin/dbmate test
+        run: /usr/local/bin/dbmate up
