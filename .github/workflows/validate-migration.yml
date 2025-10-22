@@ -1,0 +1,27 @@
+run-name: Validate ${{ github.base_ref }} against ${{ github.sha }}
+
+on:
+  push:
+    branches: [ "migration/*" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare DBMate
+        run: |
+          sudo curl -fsSL -o /usr/local/bin/dbmate https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
+          sudo chmod +x /usr/local/bin/dbmate
+
+      - name: Setup ClickHouse Server
+        uses: getsentry/action-clickhouse-in-ci@v1.6
+
+      - name: Migrate up
+        env:
+          DATABASE_URL: "clickhouse://localhost:8123/default"
+          DBMATE_MIGRATIONS_DIR: './migrations'
+        run: /usr/local/bin/dbmate test

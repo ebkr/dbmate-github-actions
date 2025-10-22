@@ -1,5 +1,5 @@
 name: Create migration
-run-name: Create migration for ${{ github.event.inputs.destination_branch_name }}
+run-name: Create migration for migration/${{ github.event.inputs.destination_branch_name }}
 
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -39,7 +39,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git switch -c ${{ github.event.inputs.destination_branch_name }}
+          git switch -c "migration/${{ github.event.inputs.destination_branch_name }}"
           git add .
-          git commit -m "AUTO: Created migration for ${{ github.event.inputs.destination_branch_name }}"
-          git push --set-upstream origin "${{ github.event.inputs.destination_branch_name }}"
+          git commit -m "AUTO: Created migration for migration/${{ github.event.inputs.destination_branch_name }}"
+          git push --set-upstream origin "migration/${{ github.event.inputs.destination_branch_name }}"
